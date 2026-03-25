@@ -17,9 +17,10 @@ type PetFormModalProps = {
   onSave: (payload: PetFormPayload) => void;
   pet?: PetInfo | null;
   defaultOwnerName?: string;
+  saving?: boolean;
 };
 
-export default function PetFormModal({ open, onClose, onSave, pet, defaultOwnerName }: PetFormModalProps) {
+export default function PetFormModal({ open, onClose, onSave, pet, defaultOwnerName, saving = false }: PetFormModalProps) {
   const [draft, setDraft] = useState<PetFormPayload>(emptyDraft);
   const [preview, setPreview] = useState("");
 
@@ -54,6 +55,7 @@ export default function PetFormModal({ open, onClose, onSave, pet, defaultOwnerN
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (saving) return;
     onSave(draft);
   }
 
@@ -68,7 +70,8 @@ export default function PetFormModal({ open, onClose, onSave, pet, defaultOwnerN
             value={draft.petName}
             onChange={(event) => setDraft({ ...draft, petName: event.target.value })}
             placeholder="Milo"
-            className="mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none"
+            disabled={saving}
+            className="mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-70"
           />
         </label>
 
@@ -80,7 +83,8 @@ export default function PetFormModal({ open, onClose, onSave, pet, defaultOwnerN
             value={draft.ownerName}
             onChange={(event) => setDraft({ ...draft, ownerName: event.target.value })}
             placeholder="Owner full name"
-            className="mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none"
+            disabled={saving}
+            className="mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-70"
           />
         </label>
 
@@ -92,7 +96,8 @@ export default function PetFormModal({ open, onClose, onSave, pet, defaultOwnerN
             value={draft.phone}
             onChange={(event) => setDraft({ ...draft, phone: event.target.value })}
             placeholder="+91 9876543210"
-            className="mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none"
+            disabled={saving}
+            className="mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-70"
           />
         </label>
 
@@ -102,7 +107,8 @@ export default function PetFormModal({ open, onClose, onSave, pet, defaultOwnerN
             type="file"
             accept="image/*"
             onChange={handleFileChange}
-            className="mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-700"
+            disabled={saving}
+            className="mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-700 disabled:cursor-not-allowed disabled:opacity-70"
           />
         </label>
 
@@ -118,15 +124,17 @@ export default function PetFormModal({ open, onClose, onSave, pet, defaultOwnerN
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-xl border border-amber-200 px-4 py-3 text-sm font-semibold text-ink-700"
+            disabled={saving}
+            className="flex-1 rounded-xl border border-amber-200 px-4 py-3 text-sm font-semibold text-ink-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="flex-1 rounded-xl border border-amber-200 bg-brand-500 px-4 py-3 text-sm font-semibold shadow-glow"
+            disabled={saving}
+            className="flex-1 rounded-xl border border-amber-200 bg-brand-500 px-4 py-3 text-sm font-semibold shadow-glow disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Save pet
+            {saving ? "Saving..." : "Save pet"}
           </button>
         </div>
       </form>

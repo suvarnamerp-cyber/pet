@@ -1010,6 +1010,22 @@
     outline-style: none;
   }
 
+  .disabled\:cursor-not-allowed:disabled {
+    cursor: not-allowed;
+  }
+
+  .disabled\:opacity-50:disabled {
+    opacity: .5;
+  }
+
+  .disabled\:opacity-60:disabled {
+    opacity: .6;
+  }
+
+  .disabled\:opacity-70:disabled {
+    opacity: .7;
+  }
+
   @media (min-width: 40rem) {
     .sm\:grid-cols-2 {
       grid-template-columns: repeat(2, minmax(0, 1fr));

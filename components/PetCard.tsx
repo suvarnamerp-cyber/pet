@@ -7,9 +7,10 @@ type PetCardProps = {
   onEdit: () => void;
   onDelete: () => void;
   onQr: () => void;
+  isDeleting?: boolean;
 };
 
-export default function PetCard({ pet, onEdit, onDelete, onQr }: PetCardProps) {
+export default function PetCard({ pet, onEdit, onDelete, onQr, isDeleting = false }: PetCardProps) {
   return (
     <div className="flex flex-col rounded-2xl border border-amber-100 bg-white p-4 shadow-soft">
       <div className="flex items-center gap-4">
@@ -24,7 +25,8 @@ export default function PetCard({ pet, onEdit, onDelete, onQr }: PetCardProps) {
         <button
           type="button"
           onClick={onEdit}
-          className="flex items-center justify-center gap-2 rounded-xl border border-amber-100 px-2 py-2 text-ink-700"
+          disabled={isDeleting}
+          className="flex items-center justify-center gap-2 rounded-xl border border-amber-100 px-2 py-2 text-ink-700 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Pencil size={14} />
           Edit
@@ -32,7 +34,8 @@ export default function PetCard({ pet, onEdit, onDelete, onQr }: PetCardProps) {
         <button
           type="button"
           onClick={onQr}
-          className="flex items-center justify-center gap-2 rounded-xl border border-amber-100 bg-brand-500 px-2 py-2"
+          disabled={isDeleting}
+          className="flex items-center justify-center gap-2 rounded-xl border border-amber-100 bg-brand-500 px-2 py-2 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <QrCode size={14} />
           QR
@@ -40,10 +43,11 @@ export default function PetCard({ pet, onEdit, onDelete, onQr }: PetCardProps) {
         <button
           type="button"
           onClick={onDelete}
-          className="flex items-center justify-center gap-2 rounded-xl border border-amber-100 px-2 py-2 text-rose-500"
+          disabled={isDeleting}
+          className="flex items-center justify-center gap-2 rounded-xl border border-amber-100 px-2 py-2 text-rose-500 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Trash2 size={14} />
-          Delete
+          {isDeleting ? "Deleting..." : "Delete"}
         </button>
       </div>
     </div>

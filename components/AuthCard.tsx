@@ -19,6 +19,8 @@ export default function AuthCard() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (loading) return;
+
     setLoading(true);
     try {
       if (mode === "signup") {
@@ -59,9 +61,10 @@ export default function AuthCard() {
 
         <button
           type="button"
+          disabled={loading}
           className={`relative z-10 rounded-full px-4 py-2 text-sm font-semibold ${
             mode === "signup" ? "text-ink-900" : "text-ink-600"
-          }`}
+          } disabled:cursor-not-allowed disabled:opacity-50`}
           onClick={() => setMode("signup")}
         >
           Sign up
@@ -69,9 +72,10 @@ export default function AuthCard() {
 
         <button
           type="button"
+          disabled={loading}
           className={`relative z-10 rounded-full px-4 py-2 text-sm font-semibold ${
             mode === "login" ? "text-ink-900" : "text-ink-600"
-          }`}
+          } disabled:cursor-not-allowed disabled:opacity-50`}
           onClick={() => setMode("login")}
         >
           Log in
@@ -87,7 +91,8 @@ export default function AuthCard() {
             value={form.userName}
             onChange={(event) => setForm({ ...form, userName: event.target.value })}
             placeholder="Enter your user name"
-            className="mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none"
+            disabled={loading}
+            className="mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-70"
           />
         </label>
 
@@ -99,7 +104,8 @@ export default function AuthCard() {
             value={form.password}
             onChange={(event) => setForm({ ...form, password: event.target.value })}
             placeholder="Enter your password"
-            className="mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none"
+            disabled={loading}
+            className="mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-70"
           />
         </label>
 
@@ -107,7 +113,7 @@ export default function AuthCard() {
           <button
             type="submit"
             disabled={loading}
-            className="flex items-center gap-2 rounded-full border border-amber-200 bg-white px-5 py-3 text-sm font-semibold text-ink-700 hover:bg-amber-100"
+            className="flex items-center gap-2 rounded-full border border-amber-200 bg-white px-5 py-3 text-sm font-semibold text-ink-700 hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? "Please wait..." : mode === "signup" ? "Create account" : "Enter dashboard"}
             <ArrowRight size={18} />

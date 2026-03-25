@@ -18,7 +18,7 @@ __turbopack_context__.s([
     "signup",
     ()=>signup
 ]);
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://192.168.1.34:8088";
+const API_BASE = ("TURBOPACK compile-time value", "https:///petpaw-0dbw.onrender.com") || "http://192.168.1.34:8088";
 function authHeaders(token) {
     const headers = {};
     if (token) headers.Authorization = `Bearer ${token}`;
@@ -189,6 +189,7 @@ function AuthCard() {
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     async function handleSubmit(event) {
         event.preventDefault();
+        if (loading) return;
         setLoading(true);
         try {
             if (mode === "signup") {
@@ -218,7 +219,7 @@ function AuthCard() {
                         children: "Pet owner access"
                     }, void 0, false, {
                         fileName: "[project]/components/AuthCard.tsx",
-                        lineNumber: 44,
+                        lineNumber: 46,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -228,20 +229,20 @@ function AuthCard() {
                                 size: 16
                             }, void 0, false, {
                                 fileName: "[project]/components/AuthCard.tsx",
-                                lineNumber: 46,
+                                lineNumber: 48,
                                 columnNumber: 11
                             }, this),
                             "Secure tags"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/AuthCard.tsx",
-                        lineNumber: 45,
+                        lineNumber: 47,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/AuthCard.tsx",
-                lineNumber: 43,
+                lineNumber: 45,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -249,7 +250,7 @@ function AuthCard() {
                 children: "Welcome back"
             }, void 0, false, {
                 fileName: "[project]/components/AuthCard.tsx",
-                lineNumber: 51,
+                lineNumber: 53,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -259,33 +260,35 @@ function AuthCard() {
                         className: `absolute bottom-1 left-1 top-1 w-[calc(50%-4px)] rounded-full bg-white shadow transition-transform duration-200 ease-out ${mode === "login" ? "translate-x-full" : "translate-x-0"}`
                     }, void 0, false, {
                         fileName: "[project]/components/AuthCard.tsx",
-                        lineNumber: 54,
+                        lineNumber: 56,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         type: "button",
-                        className: `relative z-10 rounded-full px-4 py-2 text-sm font-semibold ${mode === "signup" ? "text-ink-900" : "text-ink-600"}`,
+                        disabled: loading,
+                        className: `relative z-10 rounded-full px-4 py-2 text-sm font-semibold ${mode === "signup" ? "text-ink-900" : "text-ink-600"} disabled:cursor-not-allowed disabled:opacity-50`,
                         onClick: ()=>setMode("signup"),
                         children: "Sign up"
                     }, void 0, false, {
                         fileName: "[project]/components/AuthCard.tsx",
-                        lineNumber: 60,
+                        lineNumber: 62,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         type: "button",
-                        className: `relative z-10 rounded-full px-4 py-2 text-sm font-semibold ${mode === "login" ? "text-ink-900" : "text-ink-600"}`,
+                        disabled: loading,
+                        className: `relative z-10 rounded-full px-4 py-2 text-sm font-semibold ${mode === "login" ? "text-ink-900" : "text-ink-600"} disabled:cursor-not-allowed disabled:opacity-50`,
                         onClick: ()=>setMode("login"),
                         children: "Log in"
                     }, void 0, false, {
                         fileName: "[project]/components/AuthCard.tsx",
-                        lineNumber: 70,
+                        lineNumber: 73,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/AuthCard.tsx",
-                lineNumber: 53,
+                lineNumber: 55,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -305,16 +308,17 @@ function AuthCard() {
                                         userName: event.target.value
                                     }),
                                 placeholder: "Enter your user name",
-                                className: "mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none"
+                                disabled: loading,
+                                className: "mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/components/AuthCard.tsx",
-                                lineNumber: 84,
+                                lineNumber: 88,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/AuthCard.tsx",
-                        lineNumber: 82,
+                        lineNumber: 86,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -330,16 +334,17 @@ function AuthCard() {
                                         password: event.target.value
                                     }),
                                 placeholder: "Enter your password",
-                                className: "mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none"
+                                disabled: loading,
+                                className: "mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/components/AuthCard.tsx",
-                                lineNumber: 96,
+                                lineNumber: 101,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/AuthCard.tsx",
-                        lineNumber: 94,
+                        lineNumber: 99,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -347,31 +352,31 @@ function AuthCard() {
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                             type: "submit",
                             disabled: loading,
-                            className: "flex items-center gap-2 rounded-full border border-amber-200 bg-white px-5 py-3 text-sm font-semibold text-ink-700 hover:bg-amber-100",
+                            className: "flex items-center gap-2 rounded-full border border-amber-200 bg-white px-5 py-3 text-sm font-semibold text-ink-700 hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-60",
                             children: [
                                 loading ? "Please wait..." : mode === "signup" ? "Create account" : "Enter dashboard",
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__["ArrowRight"], {
                                     size: 18
                                 }, void 0, false, {
                                     fileName: "[project]/components/AuthCard.tsx",
-                                    lineNumber: 113,
+                                    lineNumber: 119,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/AuthCard.tsx",
-                            lineNumber: 107,
+                            lineNumber: 113,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/AuthCard.tsx",
-                        lineNumber: 106,
+                        lineNumber: 112,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/AuthCard.tsx",
-                lineNumber: 81,
+                lineNumber: 85,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -379,13 +384,13 @@ function AuthCard() {
                 children: "By continuing, you agree to share your pet details only with verified finders."
             }, void 0, false, {
                 fileName: "[project]/components/AuthCard.tsx",
-                lineNumber: 118,
+                lineNumber: 124,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/AuthCard.tsx",
-        lineNumber: 42,
+        lineNumber: 44,
         columnNumber: 5
     }, this);
 }

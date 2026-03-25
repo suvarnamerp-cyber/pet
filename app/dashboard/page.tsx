@@ -21,6 +21,7 @@ export default function DashboardPage() {
   const [showQr, setShowQr] = useState(false);
   const [loadingPets, setLoadingPets] = useState(true);
   const [savingPet, setSavingPet] = useState(false);
+  const [deletingPublicUrl, setDeletingPublicUrl] = useState<string | null>(null);
 
   const loadPets = useCallback(async (auth: AuthSession) => {
     const list = await fetchPetInventory(auth.token);
@@ -36,7 +37,7 @@ export default function DashboardPage() {
 
     setSession(current);
     loadPets(current)
-      .catch(() => console.log("Could not load pets"))
+      .catch(() => toast.error("Could not load pets"))
       .finally(() => setLoadingPets(false));
   }, [router, loadPets]);
 
@@ -46,7 +47,7 @@ export default function DashboardPage() {
   }, [session]);
 
   async function handleSavePet(payload: PetFormPayload) {
-    if (!session) return;
+    if (!session || savingPet) return;
     setSavingPet(true);
 
     try {
@@ -67,23 +68,33 @@ export default function DashboardPage() {
   }
 
   function handleEdit(pet: PetInfo) {
+    if (savingPet || deletingPublicUrl) return;
     setActivePet(pet);
     setShowForm(true);
   }
 
   async function handleDelete(pet: PetInfo) {
-    if (!session || !pet.publicUrl) return;
+    if (!session || !pet.publicUrl || deletingPublicUrl) return;
 
+    setDeletingPublicUrl(pet.publicUrl);
     try {
       await deletePetByPublicUrl(pet.publicUrl, session.token);
-      await loadPets(session);
       toast.success("Pet deleted");
+
+      try {
+        await loadPets(session);
+      } catch {
+        toast.error("Pet deleted, but list refresh failed");
+      }
     } catch {
       toast.error("Could not delete pet");
+    } finally {
+      setDeletingPublicUrl(null);
     }
   }
 
   function handleQr(pet: PetInfo) {
+    if (savingPet || deletingPublicUrl) return;
     setActivePet(pet);
     setShowQr(true);
   }
@@ -101,9 +112,7 @@ export default function DashboardPage() {
       <div className="mx-auto flex max-w-6xl flex-col gap-4">
         <section className="rounded-3xl bg-white/80 p-4 shadow-soft">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold uppercase tracking-wide text-brand-500">
-              Owner dashboard
-            </p>
+            <p className="text-sm font-semibold uppercase tracking-wide text-brand-500">Owner dashboard</p>
             <button
               type="button"
               onClick={handleLogout}
@@ -113,12 +122,8 @@ export default function DashboardPage() {
               Log out
             </button>
           </div>
-          <h2 className="mb-2 text-3xl font-semibold text-ink-900">
-            {greeting}
-          </h2>
-          <p className="mt-2 text-sm text-ink-600">
-            Add your pets, generate QR tags, and keep contact details updated.
-          </p>
+          <h2 className="mb-2 text-3xl font-semibold text-ink-900">{greeting}</h2>
+          <p className="mt-2 text-sm text-ink-600">Add your pets, generate QR tags, and keep contact details updated.</p>
         </section>
 
         <section className="grid gap-4 md:grid-cols-[2fr,1fr]">
@@ -127,11 +132,12 @@ export default function DashboardPage() {
               <h3 className="text-xl font-semibold text-ink-900">Your pets</h3>
               <button
                 type="button"
+                disabled={savingPet || !!deletingPublicUrl}
                 onClick={() => {
                   setActivePet(null);
                   setShowForm(true);
                 }}
-                className="flex items-center gap-2 rounded-full border border-amber-200 bg-white px-4 py-2 text-sm font-semibold text-ink-700"
+                className="flex items-center gap-2 rounded-full border border-amber-200 bg-white px-4 py-2 text-sm font-semibold text-ink-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Plus size={16} />
                 Add pet
@@ -153,6 +159,7 @@ export default function DashboardPage() {
                     onEdit={() => handleEdit(pet)}
                     onDelete={() => handleDelete(pet)}
                     onQr={() => handleQr(pet)}
+                    isDeleting={deletingPublicUrl === pet.publicUrl}
                   />
                 ))}
               </div>
@@ -163,20 +170,12 @@ export default function DashboardPage() {
             <h3 className="text-xl font-semibold text-ink-900">Account</h3>
             <div className="mt-4 space-y-3 text-sm text-ink-700">
               <div className="rounded-2xl border border-amber-100 bg-white p-4">
-                <p className="text-xs uppercase tracking-wide text-ink-500">
-                  User name
-                </p>
-                <p className="mt-1 text-base font-semibold text-ink-900">
-                  {session.userName}
-                </p>
+                <p className="text-xs uppercase tracking-wide text-ink-500">User name</p>
+                <p className="mt-1 text-base font-semibold text-ink-900">{session.userName}</p>
               </div>
               <div className="rounded-2xl border border-amber-100 bg-white p-4">
-                <p className="text-xs uppercase tracking-wide text-ink-500">
-                  Total pets
-                </p>
-                <p className="mt-1 text-base font-semibold text-ink-900">
-                  {pets.length}
-                </p>
+                <p className="text-xs uppercase tracking-wide text-ink-500">Total pets</p>
+                <p className="mt-1 text-base font-semibold text-ink-900">{pets.length}</p>
               </div>
             </div>
           </div>
@@ -186,6 +185,7 @@ export default function DashboardPage() {
       <PetFormModal
         open={showForm}
         pet={activePet}
+        saving={savingPet}
         defaultOwnerName={session.userName}
         onClose={() => {
           if (savingPet) return;
@@ -195,13 +195,7 @@ export default function DashboardPage() {
         onSave={handleSavePet}
       />
 
-      {activePet && (
-        <QrModal
-          open={showQr}
-          onClose={() => setShowQr(false)}
-          pet={activePet}
-        />
-      )}
+      {activePet && <QrModal open={showQr} onClose={() => setShowQr(false)} pet={activePet} />}
     </main>
   );
 }

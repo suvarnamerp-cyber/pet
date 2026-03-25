@@ -18,7 +18,7 @@ __turbopack_context__.s([
     "signup",
     ()=>signup
 ]);
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://192.168.1.34:8088";
+const API_BASE = ("TURBOPACK compile-time value", "https:///petpaw-0dbw.onrender.com") || "http://192.168.1.34:8088";
 function authHeaders(token) {
     const headers = {};
     if (token) headers.Authorization = `Bearer ${token}`;
