@@ -190,14 +190,22 @@ function AuthCard() {
     async function handleSubmit(event) {
         event.preventDefault();
         if (loading) return;
+        const payload = {
+            userName: form.userName.trim(),
+            password: form.password.trim()
+        };
+        if (!payload.userName || !payload.password) {
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].error("Username and password are required");
+            return;
+        }
         setLoading(true);
         try {
             if (mode === "signup") {
-                const message = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["signup"])(form);
+                const message = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["signup"])(payload);
                 __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].success(message || "Account created");
                 setMode("login");
             } else {
-                const session = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["login"])(form);
+                const session = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["login"])(payload);
                 (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$auth$2d$session$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["setSession"])(session);
                 __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].success(`Welcome ${session.userName}`);
                 router.push("/dashboard");
@@ -219,7 +227,7 @@ function AuthCard() {
                         children: "Pet owner access"
                     }, void 0, false, {
                         fileName: "[project]/components/AuthCard.tsx",
-                        lineNumber: 46,
+                        lineNumber: 56,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -229,20 +237,20 @@ function AuthCard() {
                                 size: 16
                             }, void 0, false, {
                                 fileName: "[project]/components/AuthCard.tsx",
-                                lineNumber: 48,
+                                lineNumber: 58,
                                 columnNumber: 11
                             }, this),
                             "Secure tags"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/AuthCard.tsx",
-                        lineNumber: 47,
+                        lineNumber: 57,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/AuthCard.tsx",
-                lineNumber: 45,
+                lineNumber: 55,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -250,7 +258,7 @@ function AuthCard() {
                 children: "Welcome back"
             }, void 0, false, {
                 fileName: "[project]/components/AuthCard.tsx",
-                lineNumber: 53,
+                lineNumber: 63,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -260,7 +268,7 @@ function AuthCard() {
                         className: `absolute bottom-1 left-1 top-1 w-[calc(50%-4px)] rounded-full bg-white shadow transition-transform duration-200 ease-out ${mode === "login" ? "translate-x-full" : "translate-x-0"}`
                     }, void 0, false, {
                         fileName: "[project]/components/AuthCard.tsx",
-                        lineNumber: 56,
+                        lineNumber: 66,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -271,7 +279,7 @@ function AuthCard() {
                         children: "Sign up"
                     }, void 0, false, {
                         fileName: "[project]/components/AuthCard.tsx",
-                        lineNumber: 62,
+                        lineNumber: 72,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -282,13 +290,13 @@ function AuthCard() {
                         children: "Log in"
                     }, void 0, false, {
                         fileName: "[project]/components/AuthCard.tsx",
-                        lineNumber: 73,
+                        lineNumber: 83,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/AuthCard.tsx",
-                lineNumber: 55,
+                lineNumber: 65,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -305,20 +313,20 @@ function AuthCard() {
                                 value: form.userName,
                                 onChange: (event)=>setForm({
                                         ...form,
-                                        userName: event.target.value
+                                        userName: event.target.value.replace(/\s+/g, "")
                                     }),
                                 placeholder: "Enter your user name",
                                 disabled: loading,
                                 className: "mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/components/AuthCard.tsx",
-                                lineNumber: 88,
+                                lineNumber: 98,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/AuthCard.tsx",
-                        lineNumber: 86,
+                        lineNumber: 96,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -333,18 +341,22 @@ function AuthCard() {
                                         ...form,
                                         password: event.target.value
                                     }),
+                                onBlur: ()=>setForm((prev)=>({
+                                            ...prev,
+                                            password: prev.password.trim()
+                                        })),
                                 placeholder: "Enter your password",
                                 disabled: loading,
                                 className: "mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/components/AuthCard.tsx",
-                                lineNumber: 101,
+                                lineNumber: 111,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/AuthCard.tsx",
-                        lineNumber: 99,
+                        lineNumber: 109,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -359,24 +371,24 @@ function AuthCard() {
                                     size: 18
                                 }, void 0, false, {
                                     fileName: "[project]/components/AuthCard.tsx",
-                                    lineNumber: 119,
+                                    lineNumber: 130,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/AuthCard.tsx",
-                            lineNumber: 113,
+                            lineNumber: 124,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/AuthCard.tsx",
-                        lineNumber: 112,
+                        lineNumber: 123,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/AuthCard.tsx",
-                lineNumber: 85,
+                lineNumber: 95,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -384,13 +396,13 @@ function AuthCard() {
                 children: "By continuing, you agree to share your pet details only with verified finders."
             }, void 0, false, {
                 fileName: "[project]/components/AuthCard.tsx",
-                lineNumber: 124,
+                lineNumber: 135,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/AuthCard.tsx",
-        lineNumber: 44,
+        lineNumber: 54,
         columnNumber: 5
     }, this);
 }

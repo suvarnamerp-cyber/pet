@@ -21,14 +21,24 @@ export default function AuthCard() {
     event.preventDefault();
     if (loading) return;
 
+    const payload: AuthFormState = {
+      userName: form.userName.trim(),
+      password: form.password.trim()
+    };
+
+    if (!payload.userName || !payload.password) {
+      toast.error("Username and password are required");
+      return;
+    }
+
     setLoading(true);
     try {
       if (mode === "signup") {
-        const message = await signup(form);
+        const message = await signup(payload);
         toast.success(message || "Account created");
         setMode("login");
       } else {
-        const session = await login(form);
+        const session = await login(payload);
         setSession(session);
         toast.success(`Welcome ${session.userName}`);
         router.push("/dashboard");
@@ -89,7 +99,7 @@ export default function AuthCard() {
             required
             type="text"
             value={form.userName}
-            onChange={(event) => setForm({ ...form, userName: event.target.value })}
+            onChange={(event) => setForm({ ...form, userName: event.target.value.replace(/\s+/g, "") })}
             placeholder="Enter your user name"
             disabled={loading}
             className="mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-70"
@@ -103,6 +113,7 @@ export default function AuthCard() {
             type="password"
             value={form.password}
             onChange={(event) => setForm({ ...form, password: event.target.value })}
+            onBlur={() => setForm((prev) => ({ ...prev, password: prev.password.trim() }))}
             placeholder="Enter your password"
             disabled={loading}
             className="mt-2 w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-ink-900 focus:border-brand-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-70"
