@@ -43,8 +43,13 @@ export default function AuthCard() {
         toast.success(`Welcome ${session.userName}`);
         router.push("/dashboard");
       }
-    } catch {
-      toast.error("message || Authentication failed");
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Authentication failed";
+
+      toast.error(message);
     } finally {
       setLoading(false);
     }
