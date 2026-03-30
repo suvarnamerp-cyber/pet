@@ -41,9 +41,10 @@ export async function login(data: AuthFormState): Promise<AuthSession> {
     body: JSON.stringify(data),
   });
 
-  const dataRes = await res.json();
-
-  if (!res.ok) throw new Error(dataRes?.message || "Login failed");
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || "Login failed");
+  }
   return res.json();
 }
 
