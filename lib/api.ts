@@ -41,7 +41,7 @@ export async function login(data: AuthFormState): Promise<AuthSession> {
     body: JSON.stringify(data),
   });
 
-    const text = await res.text();
+  const text = await res.text();
 
   if (!res.ok) throw new Error(text || "Login failed");
   return res.json();
