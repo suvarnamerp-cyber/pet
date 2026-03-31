@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import { MessageCircle, PhoneCall, ShieldCheck } from "lucide-react";
-import { fetchPetByPublicUrl, resolveImageUrl } from "@/lib/api";
+import { fetchPetByPublicUrl, postScanEvent, resolveImageUrl } from "@/lib/api";
 import type { PetInfo } from "@/lib/types";
 
 export default function PetProfilePage() {
@@ -11,6 +11,7 @@ export default function PetProfilePage() {
   const [pet, setPet] = useState<PetInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [scanMessage, setScanMessage] = useState("");
 
   const publicUrl = useMemo(() => decodeURIComponent(params.id || ""), [params.id]);
 
@@ -37,6 +38,65 @@ export default function PetProfilePage() {
     loadPet();
   }, [publicUrl]);
 
+  useEffect(() => {
+    if (!publicUrl) return;
+
+    let cancelled = false;
+
+    async function reportScanFlow() {
+      try {
+        await postScanEvent(publicUrl, { eventType: "SCAN_OPENED" });
+      } catch {
+        // Do not block UI if tracking fails
+      }
+
+      if (!("geolocation" in navigator)) {
+        try {
+          await postScanEvent(publicUrl, { eventType: "LOCATION_DENIED" });
+        } catch {
+          // ignore
+        }
+        if (!cancelled) setScanMessage("Location not supported on this device.");
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          try {
+            await postScanEvent(publicUrl, {
+              eventType: "LOCATION_SHARED",
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              accuracy: position.coords.accuracy,
+            });
+            if (!cancelled) setScanMessage("Thanks. Location shared with owner.");
+          } catch {
+            if (!cancelled) setScanMessage("Location captured but could not be sent.");
+          }
+        },
+        async () => {
+          try {
+            await postScanEvent(publicUrl, { eventType: "LOCATION_DENIED" });
+          } catch {
+            // ignore
+          }
+          if (!cancelled) setScanMessage("Location permission denied.");
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 12000,
+          maximumAge: 0,
+        },
+      );
+    }
+
+    reportScanFlow();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [publicUrl]);
+
   const callHref = pet ? `tel:${pet.phone}` : "#";
   const whatsappHref = pet ? `https://wa.me/${pet.phone.replace(/\D/g, "")}` : "#";
 
@@ -49,6 +109,7 @@ export default function PetProfilePage() {
           </span>
           <h1 className="text-3xl font-semibold text-ink-900 sm:text-4xl">Help {pet?.petName || "this pet"} get home</h1>
           <p className="text-sm text-ink-600">Please contact the owner below. Thank you for caring.</p>
+          {scanMessage ? <p className="text-xs text-ink-500">{scanMessage}</p> : null}
         </div>
 
         <div className="rounded-3xl bg-white p-4 shadow-soft">

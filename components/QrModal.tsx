@@ -4,8 +4,8 @@ import { useMemo, useState } from "react";
 import { Copy, Download, ExternalLink, Printer } from "lucide-react";
 import { QRCodeCanvas } from "qrcode.react";
 import Modal from "./Modal";
-import type { PetInfo } from "@/lib/types";
 import { buildPetQrUrl } from "@/lib/qr";
+import type { PetInfo } from "@/lib/types";
 
 type QrModalProps = {
   open: boolean;

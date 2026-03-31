@@ -3,6 +3,8 @@ import type {
   AuthSession,
   PetFormPayload,
   PetInfo,
+  ScanEvent,
+  ScanEventRequest,
 } from "./types";
 
 const API_BASE =
@@ -21,6 +23,13 @@ function normalizePets(data: unknown): PetInfo[] {
   return [];
 }
 
+function normalizeScans(data: unknown): ScanEvent[] {
+  if (Array.isArray(data)) return data as ScanEvent[];
+  if (data && typeof data === "object" && "eventType" in data)
+    return [data as ScanEvent];
+  return [];
+}
+
 export async function signup(data: AuthFormState): Promise<string> {
   const res = await fetch(`${API_BASE}/auth/register`, {
     method: "POST",
@@ -29,9 +38,8 @@ export async function signup(data: AuthFormState): Promise<string> {
   });
 
   const text = await res.text();
-
   if (!res.ok) throw new Error(text || "Signup failed");
-  return res.text();
+  return text;
 }
 
 export async function login(data: AuthFormState): Promise<AuthSession> {
@@ -109,12 +117,42 @@ export async function deletePetByPublicUrl(publicUrl: string, token: string) {
   const message = await res.text();
   const looksDeleted = message.toLowerCase().includes("deleted");
 
-  // Some backend versions return non-2xx while still deleting successfully.
   if (!res.ok && !looksDeleted) {
     throw new Error("Failed to delete pet");
   }
 
   return message;
+}
+
+export async function postScanEvent(publicUrl: string, payload: ScanEventRequest) {
+  const res = await fetch(`${API_BASE}/scan/${encodeURIComponent(publicUrl)}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) throw new Error("Failed to report scan event");
+}
+
+export async function fetchScanEvents(publicUrl: string, token?: string): Promise<ScanEvent[]> {
+  const res = await fetch(`${API_BASE}/scan/${encodeURIComponent(publicUrl)}`, {
+    method: "GET",
+    headers: authHeaders(token),
+    cache: "no-store",
+  });
+
+  if (res.status === 404) return [];
+
+  const raw = await res.text();
+
+  if (!res.ok) throw new Error("Failed to fetch scan events");
+  if (!raw.trim()) return [];
+
+  try {
+    return normalizeScans(JSON.parse(raw));
+  } catch {
+    return [];
+  }
 }
 
 export function resolveImageUrl(imagePath: string) {

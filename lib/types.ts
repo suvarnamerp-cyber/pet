@@ -22,3 +22,21 @@ export type PetFormPayload = {
   phone: string;
   photo?: File | null;
 };
+
+export type ScanEventType = "SCAN" | "SCAN_OPENED" | "LOCATION_SHARED" | "LOCATION_DENIED";
+
+export type ScanEvent = {
+  publicUrl: string;
+  eventType: ScanEventType;
+  latitude: number | null;
+  longitude: number | null;
+  accuracy: number | null;
+  scanTime: string;
+};
+
+export type ScanEventRequest = {
+  eventType: ScanEventType;
+  latitude?: number;
+  longitude?: number;
+  accuracy?: number;
+};
